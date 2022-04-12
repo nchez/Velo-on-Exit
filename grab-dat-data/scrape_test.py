@@ -46,13 +46,39 @@ for i in range(len(lineup_cards)):
     for l in range(2, len(players) - 9):
         away_player_obj = {}
         if players[l].find('.desktop-name'):
-            actual_name = players[l].find('.desktop-name')
-            away_player_obj['player_name'] = actual_name
+            actual_name = players[l].find('.desktop-name', first=True)
+            away_player_obj['player_name'] = actual_name.text
             away_player_obj['b_ref_id'] = None
             away_player_obj['mlb_id'] = None
-            away_player_obj['position'] = players[l].text[players[l].text.index(')'):]
-            away_player_obj['bat'] = players[l].text[players[l].text.index('(')+1:players[l].text.index('(')+1]
+            away_player_obj['position'] = players[l].text[players[l].text.index(')')+2:]
+            away_player_obj['bat'] = players[l].text[players[l].text.index('(')+1:players[l].text.index('(')+2]
             away_player_obj['spot'] = int(players[l].text[:1])
-            print(players[l].text[:2] + " " + actual_name[0].text + " " + players[l].text[players[l].text.index('('):])
+            game_obj['away_lineup'].append(away_player_obj)
             continue
-        print(players[l].text)
+        away_player_obj['player_name'] = players[l].text[3:players[l].text.index('(')-1]
+        away_player_obj['b_ref_id'] = None
+        away_player_obj['mlb_id'] = None
+        away_player_obj['position'] = players[l].text[players[l].text.index(')')+2:]
+        away_player_obj['bat'] = players[l].text[players[l].text.index('(')+1:players[l].text.index('(')+2]
+        away_player_obj['spot'] = int(players[l].text[:1])
+        game_obj['away_lineup'].append(away_player_obj)
+    for l in range(len(players) - 9, len(players)):
+        home_player_obj = {}
+        if players[l].find('.desktop-name'):
+            actual_name = players[l].find('.desktop-name', first=True)
+            home_player_obj['player_name'] = actual_name.text
+            home_player_obj['b_ref_id'] = None
+            home_player_obj['mlb_id'] = None
+            home_player_obj['position'] = players[l].text[players[l].text.index(')')+2:]
+            home_player_obj['bat'] = players[l].text[players[l].text.index('(')+1:players[l].text.index('(')+2]
+            home_player_obj['spot'] = int(players[l].text[:1])
+            game_obj['home_lineup'].append(home_player_obj)
+            continue
+        home_player_obj['player_name'] = players[l].text[3:players[l].text.index('(')-1]
+        home_player_obj['b_ref_id'] = None
+        home_player_obj['mlb_id'] = None
+        home_player_obj['position'] = players[l].text[players[l].text.index(')')+2:]
+        home_player_obj['bat'] = players[l].text[players[l].text.index('(')+1:players[l].text.index('(')+2]
+        home_player_obj['spot'] = int(players[l].text[:1])
+        game_obj['home_lineup'].append(home_player_obj)
+    print(game_obj)
