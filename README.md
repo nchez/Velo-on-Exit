@@ -6,7 +6,8 @@
 
 ## Tech Stack
 
-Python for web scraping Statcast and Baseball-Press. Cron-job or Airflow for scheduled script execution. PyMongo and MongoDB to populate the database.
+Python for web scraping Statcast and Baseball-Press. Cron-job or Airflow for scheduled script execution. Send data from web scraping as CSV or JSON to JS back-end.
+MongoDb and Mongoose for JS back-end.
 Next.js and possibly TypeScript for the front-end.
 ![data flow](ReadMe/Data_Flow.png)
 
@@ -21,6 +22,15 @@ Next.js and possibly TypeScript for the front-end.
 ## ROUGH ERD
 
 ![rough erd](ReadMe/Rough_ERD.png)
+
+## RESTFUL ROUTING
+
+| HTTP VERB | ROUTE                | ACTION | USED FOR                                           |
+| --------- | -------------------- | ------ | -------------------------------------------------- |
+| GET       | '/players'           | index  | access search page to find player and leaderboard? |
+| GET       | '/players/:playerid' | index  | access player page                                 |
+| GET       | '/games/:gameid      | index  | access game lineup                                 |
+| POST      | '/games/'            | create | add game to database                               |
 
 ## Planning
 
