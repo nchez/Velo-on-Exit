@@ -1,13 +1,15 @@
 import json
+import os
 from requests_html import HTMLSession
 
 session = HTMLSession()
 r = session.get('https://www.baseballpress.com/lineups/2022-04-11')
 date = r.html.find('.date-item', first=True).attrs['data-val']
+## Make directory to store daily game lineup json files 
+os.mkdir(f'{date.replace("/", "")}')
+daily_directory_path = f'{date.replace("/", "")}'
 lineup_cards = r.html.find('.lineup-card')
-# players = r.html.find('.player')
-# for i in range(len(players)):
-#     print(players[i].text)
+
 
 def change_to_military_time(strng):
     # 9:45PM -> 21:45, 12:00AM -> 00:00, 
@@ -100,14 +102,5 @@ for i in range(len(lineup_cards)):
         home_player_obj['spot'] = int(players[l].text[:1])
         game_obj['home_lineup'].append(home_player_obj)
     file_name = f'{date.replace("/", "")}_{game_obj["time"]}_{game_obj["away_team"]}vs{game_obj["home_team"]}'
-    with open(f'{file_name}.json', 'w') as f:
+    with open(f'{daily_directory_path}/{file_name}.json', 'w') as f:
         json.dump(game_obj, f)
-
-    ## The above commented code works
-
-    ## This is test code that didnt work ##
-    # with open(f'{file_name}.json', 'w') as outfile:
-    #     json.load(json_game_obj, outfile)
-    # with open(f'{file_name}.json', 'w') as outfile:
-    #     json.dump(game_obj, outfile, sort_keys = True, indent = 4,
-    #            ensure_ascii = False)
