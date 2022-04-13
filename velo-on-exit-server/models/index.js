@@ -15,5 +15,5 @@ db.on('error', (err) => {
   console.log(err)
 })
 
-module.exports.Player = require('./player')
+module.exports.PlayerLineup = require('./playerLineup')
 module.exports.Game = require('./game')

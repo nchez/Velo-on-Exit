@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 
 // controllers
 app.use('/game', require('./controllers/game'))
-app.use('/player', require('./controllers/player'))
+app.use('/player_lineup', require('./controllers/playerLineup'))
 // app.use('/api-v1/game', require('./controllers/api-v1/game'))
 
 app.listen(PORT, () =>

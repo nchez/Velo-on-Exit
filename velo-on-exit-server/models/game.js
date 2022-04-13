@@ -6,7 +6,7 @@ const gameSchema = new mongoose.Schema(
     away_team: {
       type: String,
       required: true,
-      minlength: 5,
+      minlength: 2,
       maxlength: 20,
     },
     date: {
@@ -22,7 +22,7 @@ const gameSchema = new mongoose.Schema(
     home_team: {
       type: String,
       required: true,
-      minlength: 5,
+      minlength: 2,
       maxlength: 20,
     },
     away_sp: {
@@ -52,13 +52,13 @@ const gameSchema = new mongoose.Schema(
     away_lineup: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Game',
+        ref: 'PlayerLineup',
       },
     ],
     home_lineup: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Game',
+        ref: 'PlayerLineup',
       },
     ],
   },
