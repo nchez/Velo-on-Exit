@@ -9,6 +9,21 @@ lineup_cards = r.html.find('.lineup-card')
 # for i in range(len(players)):
 #     print(players[i].text)
 
+def change_to_military_time(strng):
+    # 9:45PM -> 21:45, 12:00AM -> 00:00, 
+    
+    if (len(strng) <= 6):
+        strng= "0" + strng
+    if (int(strng[:2])< 12 and strng[-2:] == "pm"):
+        strng = str(int(strng[:2])+12)+ strng[3:5]
+    elif (int(strng[:2])==12 and strng[-2:] == "am"):
+        strng = "00" + strng[3:5]
+    else:
+        strng = strng[:2]+strng[3:5]
+
+    return(strng)
+
+
 for i in range(len(lineup_cards)):
     game_obj = {'away_team': None, 'date': None, 'time': None, 'home_team': None, 'away_sp': None, 'away_sp_h': None, 'home_sp': None, 'home_sp_h': None, 'away_lineup': [], 'home_lineup': []}
     game_info = lineup_cards[i].find('.lineup-card-header', first=True)
@@ -36,7 +51,7 @@ for i in range(len(lineup_cards)):
     home_handedness_index = game_info_arr[5].index('(')
     game_obj['away_team'] = game_info_arr[0]
     game_obj['date'] = date
-    game_obj['time'] = game_info_arr[2]
+    game_obj['time'] = change_to_military_time(game_info_arr[2])
     game_obj['home_team'] = game_info_arr[3]
     game_obj['away_sp'] = game_info_arr[4][:away_handedness_index-1]
     game_obj['away_sp_h'] = game_info_arr[4][away_handedness_index+1:-1]
@@ -84,9 +99,13 @@ for i in range(len(lineup_cards)):
         home_player_obj['bat'] = players[l].text[players[l].text.index('(')+1:players[l].text.index('(')+2]
         home_player_obj['spot'] = int(players[l].text[:1])
         game_obj['home_lineup'].append(home_player_obj)
-    file_name = f'{date.replace("/", "")}_{game_obj["away_team"]}vs{game_obj["home_team"]}'
+    file_name = f'{date.replace("/", "")}_{game_obj["time"]}_{game_obj["away_team"]}vs{game_obj["home_team"]}'
     with open(f'{file_name}.json', 'w') as f:
         json.dump(game_obj, f)
+
+    ## The above commented code works
+
+    ## This is test code that didnt work ##
     # with open(f'{file_name}.json', 'w') as outfile:
     #     json.load(json_game_obj, outfile)
     # with open(f'{file_name}.json', 'w') as outfile:
