@@ -1,8 +1,22 @@
 import json
 import os
+# import pandas as pd
+from datetime import date, timedelta
 from requests_html import HTMLSession
+
+
 # scrape_date = '2022-04-07'
-scrape_dates = ['2022-04-07', '2022-04-08', '2022-04-09', '2022-04-10', '2022-04-11', '2022-04-12']
+# scrape_dates = ['2022-04-07', '2022-04-08', '2022-04-09', '2022-04-10', '2022-04-11', '2022-04-12']
+
+def date_array(start_date, num_of_days):
+    dates = []
+    # 2022-04-07 YYYY-MM-DD
+    d_start = date(int(start_date[0:4]), int(start_date[5:7]), int(start_date[8:]))
+    for i in range(num_of_days):
+        dates.append(d_start+timedelta(days=i))
+    return dates
+scrape_dates = date_array('2021-08-30', 35)
+
 # session = HTMLSession()
 # r = session.get(f'https://www.baseballpress.com/lineups/{scrape_date}')
 # date = r.html.find('.date-item', first=True).attrs['data-val']
@@ -26,19 +40,39 @@ def change_to_military_time(strng):
 
     return(strng)
 
+def convert_to_mongo_date(string):
+    # input is this
+    # MM/DD/YYYY => 04/07/2022
+    ## need this: YYYY-MM-DD
+    #     min: '1987-09-28',
+    # max: '1994-05-23'
+    date_string = string.replace('/', '-')
+    string = f'{date_string[-4:]}-{date_string[0:2]}-{date_string[3:5]}'
+    return(string)
+
 for i in range(len(scrape_dates)):
     session = HTMLSession()
     r = session.get(f'https://www.baseballpress.com/lineups/{scrape_dates[i]}')
     date = r.html.find('.date-item', first=True).attrs['data-val']
-    os.mkdir(f'./scraped_data/{date.replace("/", "")}')
-    daily_directory_path = f'./scraped_data/{date.replace("/", "")}'
+    mongo_date = convert_to_mongo_date(date)
     lineup_cards = r.html.find('.lineup-card')
+    row_lineups_for_null_pages = r.html.find('.lineups')
     for i in range(len(lineup_cards)):
         game_obj = {'away_team': None, 'date': None, 'time': None, 'home_team': None, 'away_sp': None, 'away_sp_h': None, 'home_sp': None, 'home_sp_h': None, 'away_lineup': [], 'home_lineup': []}
         game_info = lineup_cards[i].find('.lineup-card-header', first=True)
+        lineup_card_body = lineup_cards[i].find('.lineup-card-body', first=True)
         # do not include PPD (postponed) games, continue to next iteration of loop if PPD found in game header
+        if row_lineups_for_null_pages == None:
+            break
         if "PPD" in game_info.text:
             continue
+        if "All Stars" in game_info.text:
+            break
+        if "No Lineup Released" in lineup_card_body.text:
+            continue
+        if os.path.isdir(f'./scraped_lineup_data/{date.replace("/", "")}') == False:
+            os.mkdir(f'./scraped_lineup_data/{date.replace("/", "")}')
+        daily_directory_path = f'./scraped_lineup_data/{date.replace("/", "")}'
         # split game info text into array so game data is separated and can be stored in object
         game_info_arr = game_info.text.split("\n")
         # find and replace shortened names (mobile vs desktop) then replace them in the array
@@ -59,7 +93,7 @@ for i in range(len(scrape_dates)):
         away_handedness_index = game_info_arr[4].index('(')
         home_handedness_index = game_info_arr[5].index('(')
         game_obj['away_team'] = game_info_arr[0]
-        game_obj['date'] = date
+        game_obj['date'] = mongo_date
         game_obj['time'] = change_to_military_time(game_info_arr[2])
         game_obj['home_team'] = game_info_arr[3]
         game_obj['away_sp'] = game_info_arr[4][:away_handedness_index-1]
@@ -81,7 +115,7 @@ for i in range(len(scrape_dates)):
                 away_player_obj['bat'] = players[l].text[players[l].text.index('(')+1:players[l].text.index('(')+2]
                 away_player_obj['spot'] = int(players[l].text[:1])
                 away_player_obj['opp_sp_h'] = game_obj['home_sp_h']
-                away_player_obj['date'] = date
+                away_player_obj['date'] = mongo_date
                 game_obj['away_lineup'].append(away_player_obj)
                 continue
             away_player_obj['player_name'] = players[l].text[3:players[l].text.index('(')-1]
@@ -91,7 +125,7 @@ for i in range(len(scrape_dates)):
             away_player_obj['bat'] = players[l].text[players[l].text.index('(')+1:players[l].text.index('(')+2]
             away_player_obj['spot'] = int(players[l].text[:1])
             away_player_obj['opp_sp_h'] = game_obj['home_sp_h']
-            away_player_obj['date'] = date
+            away_player_obj['date'] = mongo_date
             game_obj['away_lineup'].append(away_player_obj)
         for l in range(len(players) - 9, len(players)):
             home_player_obj = {}
@@ -104,7 +138,7 @@ for i in range(len(scrape_dates)):
                 home_player_obj['bat'] = players[l].text[players[l].text.index('(')+1:players[l].text.index('(')+2]
                 home_player_obj['spot'] = int(players[l].text[:1])
                 home_player_obj['opp_sp_h'] = game_obj['away_sp_h']
-                home_player_obj['date'] = date
+                home_player_obj['date'] = mongo_date
                 game_obj['home_lineup'].append(home_player_obj)
                 continue
             home_player_obj['player_name'] = players[l].text[3:players[l].text.index('(')-1]
@@ -114,7 +148,7 @@ for i in range(len(scrape_dates)):
             home_player_obj['bat'] = players[l].text[players[l].text.index('(')+1:players[l].text.index('(')+2]
             home_player_obj['spot'] = int(players[l].text[:1])
             home_player_obj['opp_sp_h'] = game_obj['away_sp_h']
-            home_player_obj['date'] = date
+            home_player_obj['date'] = mongo_date
             game_obj['home_lineup'].append(home_player_obj)
         file_name = f'{date.replace("/", "")}_{game_obj["time"]}_{game_obj["away_team"]}vs{game_obj["home_team"]}'
         with open(f'{daily_directory_path}/{file_name}.json', 'w') as f:

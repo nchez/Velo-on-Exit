@@ -10,7 +10,7 @@ const gameSchema = new mongoose.Schema(
       maxlength: 20,
     },
     date: {
-      type: String,
+      type: Date,
       required: true,
     },
     time: {

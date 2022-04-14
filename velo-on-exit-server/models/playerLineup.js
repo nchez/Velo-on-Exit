@@ -40,7 +40,7 @@ const playerLineupSchema = new mongoose.Schema(
       maxlength: 1,
     },
     date: {
-      type: String,
+      type: Date,
       required: true,
     },
     opp_sp_h: {

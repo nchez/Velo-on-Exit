@@ -78,5 +78,6 @@ fs.readdir(`${filePath}`, async (err, files) => {
   }
 })
 
+console.log('db was populated with files in scraped_data')
 // to read file
 // const data = JSON.parse(fs.readFileSync(filePath))
