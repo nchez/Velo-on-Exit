@@ -28,7 +28,10 @@ def change_to_military_time(strng):
     return(strng)
 
 session = HTMLSession()
-players = [{'name': 'matt-olson', 'mlb_id': '621566'}, {'name': 'luis-robert', 'mlb_id': '673357'}, {'name': 'mookie-betts', 'mlb_id': '605141'}, {'name': 'akil-baddoo', 'mlb_id': '668731'}]
+with open('../velo-on-exit-server/4142022uniqueplayers.json') as json_file:
+    players = json.load(json_file)
+
+# players = [{'name': 'matt-olson', 'mlb_id': '621566'}, {'name': 'luis-robert', 'mlb_id': '673357'}, {'name': 'mookie-betts', 'mlb_id': '605141'}, {'name': 'akil-baddoo', 'mlb_id': '668731'}]
 todays_date = str(date.today()).replace("-", "")
 for k in range(len(players)):
     file_name = f'{todays_date}-{players[k]["name"]}-{players[k]["mlb_id"]}'

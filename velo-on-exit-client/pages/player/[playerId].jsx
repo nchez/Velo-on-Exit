@@ -25,18 +25,24 @@ export default function PlayerPage({ playerData }) {
   // const [dates, setDates] = useState([])
   // const [spots, setSpots] = useState([])
   const positionsArr = []
-  playerData.forEach((element, index) => {
+  playerData.lineup.forEach((element, index) => {
     if (positionsArr.includes(element.position) === false) {
       positionsArr.push(element.position)
     }
   })
-  const playerDates = playerData.map((element) => {
+  const playerDates = playerData.lineup.map((element) => {
     return new Date(element.date).toLocaleDateString()
   })
-  const playerSpots = playerData.map((element) => {
+  const playerSpots = playerData.lineup.map((element) => {
     return element.spot
   })
-  console.log(playerDates)
+  const exitVelos = playerData.statcast.map((element) => {
+    return element.exit_velo
+  })
+  const exitVeloDates = playerData.statcast.map((element) => {
+    return element.game_date
+  })
+  console.log(playerData.statcast)
 
   const options = {
     responsive: true,
@@ -50,11 +56,11 @@ export default function PlayerPage({ playerData }) {
       },
     },
     // reverse y1 axis ticks so y-axis is 1 at the top of the graph
-    scales: {
-      y1: {
-        reverse: true,
-      },
-    },
+    // scales: {
+    //   y1: {
+    //     reverse: true,
+    //   },
+    // },
   }
 
   const chartData = {
@@ -69,16 +75,29 @@ export default function PlayerPage({ playerData }) {
       },
     ],
   }
+  const chartDataVelo = {
+    labels: exitVeloDates,
+    datasets: [
+      {
+        label: 2022,
+        data: exitVelos,
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        yAxisID: 'y1',
+      },
+    ],
+  }
 
   const positions = positionsArr.map((element, index) => {
     return <li key={`positions-index-${index}`}>{element}</li>
   })
   return (
     <div>
-      <h1>Player Page for: {playerData[0].player_name}</h1>
+      <h1>Player Page for: {playerData.lineup[0].player_name}</h1>
       <h2>Position(s) Played</h2>
       <ul>{positions}</ul>
       <Line options={options} data={chartData} />
+      <Line options={options} data={chartDataVelo} />
     </div>
   )
 }

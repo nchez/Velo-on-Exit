@@ -8,8 +8,11 @@ router.get('/:id', async (req, res) => {
     const player = await db.PlayerLineup.find({ mlb_id: req.params.id }).sort(
       'date'
     )
-    console.log(player)
-    res.json(player)
+    const statcastPlayer = await db.StatcastHitterGame.find({
+      mlb_id: req.params.id,
+    }).sort({ game_date: 'asc' })
+    console.log(statcastPlayer)
+    res.json({ lineup: player, statcast: statcastPlayer })
   } catch (error) {
     console.log(error)
     res.status(503).json({ msg: 'Database or server room is on fire 🔥' })
