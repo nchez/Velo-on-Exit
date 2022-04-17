@@ -66,7 +66,7 @@ const apiHitterSeasonSchema = new mongoose.Schema(
       type: Number,
       required: false,
       minimum: 0,
-      maximum: 2000,
+      maximum: 4000,
     },
     team_full: {
       type: String,

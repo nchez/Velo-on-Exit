@@ -1,9 +1,12 @@
 import json
 import os
 from requests_html import HTMLSession
+from dotenv import load_dotenv
 
 dir_link = './scraped_api_rosters'
 directory = os.fsencode(dir_link)
+
+api_key = os.getenv("API_KEY")
 
 current_players_on_rosters = []
 for file in os.listdir(directory):
@@ -32,7 +35,7 @@ querystring = {"league_list_id":"'mlb'","game_type":"'R'","season":"'2017'","pla
 
 headers = {
 	"X-RapidAPI-Host": "mlb-data.p.rapidapi.com",
-	"X-RapidAPI-Key": "ff62285575mshe102c9f4d6d61b0p1ca819jsn8c0dd8dd9b36"
+	"X-RapidAPI-Key": f"{api_key}"
 }
 
 current_player_data_array = []

@@ -4,7 +4,7 @@ const { format } = require('path')
 const filePath = '../grab-dat-data/current_player_stats.txt'
 
 const currentPlayerSeasonsSince2020Array = JSON.parse(fs.readFileSync(filePath))
-
+console.log(currentPlayerSeasonsSince2020Array)
 const formattedSeasonsArray = []
 
 // for (let i = 0; i < currentPlayerSeasonsSince2020Array.length; i++) {
@@ -22,12 +22,12 @@ const populatePlayerSeasons = async () => {
   let slgVals = []
   for (let i = 0; i < currentPlayerSeasonsSince2020Array.length; i++) {
     for (const property in currentPlayerSeasonsSince2020Array[i]) {
-      if (currentPlayerSeasonsSince2020Array[i][property].charAt(0) === '.') {
-        currentPlayerSeasonsSince2020Array[i][property] =
-          '0' + currentPlayerSeasonsSince2020Array[i][property]
-        console.log(currentPlayerSeasonsSince2020Array[i][property])
-      }
-      if (currentPlayerSeasonsSince2020Array[i][property].charAt(2) === '-') {
+      // if (currentPlayerSeasonsSince2020Array[i][property].charAt(0) === '.') {
+      //   currentPlayerSeasonsSince2020Array[i][property] =
+      //     '0' + currentPlayerSeasonsSince2020Array[i][property]
+      //   console.log(currentPlayerSeasonsSince2020Array[i][property])
+      // }
+      if (currentPlayerSeasonsSince2020Array[i][property].includes('--')) {
         currentPlayerSeasonsSince2020Array[i][property] === '0.000'
       }
       slgVals.push(currentPlayerSeasonsSince2020Array[i]['slg1000'])
@@ -106,7 +106,7 @@ const populatePlayerSeasons = async () => {
   console.log(slgVals)
 }
 // console.log(formattedSeasonsArray)
-populatePlayerSeasons()
+// populatePlayerSeasons()
 console.log('seed function was completed to player season db.')
 // grab directories from scraped_data
 /*
