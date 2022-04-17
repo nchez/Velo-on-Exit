@@ -17,4 +17,5 @@ db.on('error', (err) => {
 
 module.exports.PlayerLineup = require('./playerLineup')
 module.exports.StatcastHitterGame = require('./statcastHitterGame')
+module.exports.ApiHitterSeason = require('./apiHitterSeason')
 module.exports.Game = require('./game')
