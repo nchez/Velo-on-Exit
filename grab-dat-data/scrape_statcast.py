@@ -4,6 +4,8 @@ import os
 from datetime import date, timedelta
 from requests_html import HTMLSession
 
+# lastest mlb_id is 605233
+
 def date_array(start_date, num_of_days):
     dates = []
     # 2022-04-07 YYYY-MM-DD
@@ -36,7 +38,7 @@ todays_date = str(date.today()).replace("-", "")
 for k in range(len(players)):
     file_name = f'{todays_date}-{players[k]["name"]}-{players[k]["mlb_id"]}'
     r = session.get(f'https://baseballsavant.mlb.com/savant-player/{players[k]["name"]}-{players[k]["mlb_id"]}?stats=gamelogs-r-hitting-statcast&season=2022')
-    r.html.render(timeout = 20, sleep=1)
+    r.html.render(timeout = 30, sleep=1)
     statcast_headers = []
     statcast_log_div = r.html.find('#gamelogs_statcast', first=True)
     statcast_table_headers = statcast_log_div.find('.th-component-header')

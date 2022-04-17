@@ -1,6 +1,12 @@
 const db = require('./models')
 const fs = require('fs')
-const filePath = '../grab-dat-data/scraped_statcast_data/'
+const filePath = '../grab-dat-data/current_player_stats.txt'
+
+console.log(JSON.parse(fs.readFileSync(filePath))[0])
+
+const currentPlayerSeasonsSince2020Array = JSON.parse(fs.readFileSync(filePath))
+
+for (let i = 0; i < currentPlayerSeasonsSince2020Array.length; i++) {}
 
 // grab directories from scraped_data
 /*
@@ -38,59 +44,59 @@ fs.readdir(`${filePath}`, async (err, files) => {
   }
 })
 */
-const renameGameObj = (obj) => {
-  let renamedObj = {
-    game_date: obj['Game Date'],
-    pitcher: obj.Pitcher,
-    exit_velo: parseInt(obj['EV (MPH)']),
-    result: obj.Result,
-    launch_angle: parseInt(obj['LA (°)']),
-    distance: parseInt(obj['Dist (ft)']),
-    direction: obj.Direction,
-    pitch_speed: obj['Pitch (MPH)'],
-    pitch_type: obj['Pitch Type'],
-    mlb_id: obj.mlb_id,
-  }
-  if (!parseInt(obj['EV (MPH)'])) {
-    delete renamedObj.exit_velo
-  }
-  if (!parseInt(obj['LA (°)'])) {
-    delete renamedObj.launch_angle
-  }
-  if (!obj.Pitcher) {
-    delete renamedObj.pitcher
-    renamedObj.hitter = obj.Hitter
-  }
-  if (!parseInt(obj['Dist (ft)'])) {
-    delete renamedObj.distance
-  }
-  if (!obj.Direction) {
-    delete renamedObj.direction
-  }
-  return renamedObj
-}
+// const renameGameObj = (obj) => {
+//   let renamedObj = {
+//     game_date: obj['Game Date'],
+//     pitcher: obj.Pitcher,
+//     exit_velo: parseInt(obj['EV (MPH)']),
+//     result: obj.Result,
+//     launch_angle: parseInt(obj['LA (°)']),
+//     distance: parseInt(obj['Dist (ft)']),
+//     direction: obj.Direction,
+//     pitch_speed: obj['Pitch (MPH)'],
+//     pitch_type: obj['Pitch Type'],
+//     mlb_id: obj.mlb_id,
+//   }
+//   if (!parseInt(obj['EV (MPH)'])) {
+//     delete renamedObj.exit_velo
+//   }
+//   if (!parseInt(obj['LA (°)'])) {
+//     delete renamedObj.launch_angle
+//   }
+//   if (!obj.Pitcher) {
+//     delete renamedObj.pitcher
+//     renamedObj.hitter = obj.Hitter
+//   }
+//   if (!parseInt(obj['Dist (ft)'])) {
+//     delete renamedObj.distance
+//   }
+//   if (!obj.Direction) {
+//     delete renamedObj.direction
+//   }
+//   return renamedObj
+// }
 
-const addPlayerToMongo = async (arr) => {
-  await db.StatcastHitterGame.create(arr)
-}
+// const addPlayerToMongo = async (arr) => {
+//   await db.StatcastHitterGame.create(arr)
+// }
 
-fs.readdir(`${filePath}`, async (err, files) => {
-  if (err) {
-    console.log(err)
-  } else {
-    let newGameObjArray = []
-    files.map(async (file) => {
-      const statcastGameArr = JSON.parse(fs.readFileSync(`${filePath}${file}`))
-      for (let i = 0; i < statcastGameArr.length; i++) {
-        const mongooseGameObj = renameGameObj(statcastGameArr[i])
-        newGameObjArray.push(mongooseGameObj)
-      }
-    })
+// fs.readdir(`${filePath}`, async (err, files) => {
+//   if (err) {
+//     console.log(err)
+//   } else {
+//     let newGameObjArray = []
+//     files.map(async (file) => {
+//       const statcastGameArr = JSON.parse(fs.readFileSync(`${filePath}${file}`))
+//       for (let i = 0; i < statcastGameArr.length; i++) {
+//         const mongooseGameObj = renameGameObj(statcastGameArr[i])
+//         newGameObjArray.push(mongooseGameObj)
+//       }
+//     })
 
-    addPlayerToMongo(newGameObjArray)
-    console.log('db was populated with files in scraped_data')
-  }
-})
+//     addPlayerToMongo(newGameObjArray)
+//     console.log('db was populated with files in scraped_data')
+//   }
+// })
 // let statcastGameObj = JSON.parse(
 //   fs.readFileSync(
 //     `../grab-dat-data/scraped_statcast_data/20220414-christian-yelich-592885.json`

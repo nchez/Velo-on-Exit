@@ -6,6 +6,14 @@ const statcastHitterGameSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    pitcher: {
+      type: String,
+      required: false,
+    },
+    hitter: {
+      type: String,
+      required: false,
+    },
     result: {
       type: String,
       required: true,
@@ -28,24 +36,24 @@ const statcastHitterGameSchema = new mongoose.Schema(
       type: Number,
       required: false,
       minlength: 1,
-      maxlength: 1,
+      maxlength: 10,
     },
     direction: {
       type: String,
       required: false,
       minlength: 0,
-      maxlength: 15,
+      maxlength: 20,
     },
     pitch_speed: {
       type: Number,
-      required: true,
-      minlength: 1,
-      maxlength: 5,
+      required: false,
+      minlength: 0,
+      maxlength: 6,
     },
     pitch_type: {
       type: String,
-      required: true,
-      minlength: 2,
+      required: false,
+      minlength: 0,
       maxlength: 15,
     },
     mlb_id: {
