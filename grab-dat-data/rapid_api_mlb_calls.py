@@ -3,6 +3,9 @@ import os
 from datetime import date, timedelta
 import json
 from requests_html import HTMLSession
+from dotenv import load_dotenv
+load_dotenv()
+api_key = os.getenv("API_KEY")
 
 scrape_team_ids = []
 
@@ -15,7 +18,7 @@ for i in range(len(scrape_team_ids)):
     querystring = {"end_season":"'2022'","team_id":f"'{str(scrape_team_ids[i])}'","start_season":"'2020'","all_star_sw":"'N'","sort_order":"name_asc"}
     headers = {
         "X-RapidAPI-Host": "mlb-data.p.rapidapi.com",
-        "X-RapidAPI-Key": "ff62285575mshe102c9f4d6d61b0p1ca819jsn8c0dd8dd9b36"
+        "X-RapidAPI-Key": f"{api_key}"
     }
     response = session.get(url, headers=headers, params=querystring)
     data = json.loads(response.text)
