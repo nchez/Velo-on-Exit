@@ -3,42 +3,42 @@
 
 # CLIENT .gitignore
 # dependencies
-./velo-on-exit-client/node_modules
-./velo-on-exit-client/pnp
-./velo-on-exit-client/pnp.js
+velo-on-exit-client/node_modules
+velo-on-exit-client/pnp
+velo-on-exit-client/pnp.js
 
 # testing
-./velo-on-exit-client/coverage
+velo-on-exit-client/coverage
 
 # next.js
-./velo-on-exit-client/.ext/
-./velo-on-exit-client/out/
+velo-on-exit-client/.ext/
+velo-on-exit-client/out/
 
 # production
-./velo-on-exit-client/build
+velo-on-exit-client/build
 
 # misc
-./velo-one-exit-client/DS_Store
-./velo-on-exit-client/*.pem
+velo-one-exit-client/DS_Store
+velo-on-exit-client/*.pem
 
 # debug
-./velo-on-exit-client/npm-debug.log*
-./velo-on-exit-client/yarn-debug.log*
-./velo-on-exit-client/yarn-error.log*
-./velo-on-exit-client/pnpm-debug.log*
+velo-on-exit-client/npm-debug.log*
+velo-on-exit-client/yarn-debug.log*
+velo-on-exit-client/yarn-error.log*
+velo-on-exit-client/pnpm-debug.log*
 
 # local env files
-./velo-on-exit-client/env*.local
+velo-on-exit-client/env*.local
 
 # vercel
-./velo-on-exit-client/vercel
+velo-on-exit-client/vercel
 
 ## Server .gitignore
-./velo-on-exit/server/node_modules
+velo-on-exit-server/node_modules
 
 
 # GRAB DAT DATA .gitignore
-./grab-dat-data/.env
-./grab-dat-data/scraped_api_rosters
-./grab-dat-data/scraped_lineup_data
-./grab-dat-data/scraped_statcast_data
+grab-dat-data/.env
+grab-dat-data/scraped_api_rosters
+grab-dat-data/scraped_lineup_data
+grab-dat-data/scraped_statcast_data
