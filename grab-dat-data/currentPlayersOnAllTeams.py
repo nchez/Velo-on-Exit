@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 dir_link = './scraped_api_rosters'
 directory = os.fsencode(dir_link)
 
+load_dotenv()
 api_key = os.getenv("API_KEY")
 
 current_players_on_rosters = []
