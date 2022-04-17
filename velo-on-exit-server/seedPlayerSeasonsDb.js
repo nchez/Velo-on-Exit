@@ -4,7 +4,6 @@ const { format } = require('path')
 const filePath = '../grab-dat-data/current_player_stats.txt'
 
 const currentPlayerSeasonsSince2020Array = JSON.parse(fs.readFileSync(filePath))
-console.log(currentPlayerSeasonsSince2020Array)
 const formattedSeasonsArray = []
 
 // for (let i = 0; i < currentPlayerSeasonsSince2020Array.length; i++) {
@@ -28,11 +27,12 @@ const populatePlayerSeasons = async () => {
       //   console.log(currentPlayerSeasonsSince2020Array[i][property])
       // }
       if (currentPlayerSeasonsSince2020Array[i][property].includes('--')) {
-        currentPlayerSeasonsSince2020Array[i][property] === '0.000'
+        currentPlayerSeasonsSince2020Array[i][property] = '0.000'
       }
-      slgVals.push(currentPlayerSeasonsSince2020Array[i]['slg1000'])
+      if (currentPlayerSeasonsSince2020Array[i][property].includes('*')) {
+        currentPlayerSeasonsSince2020Array[i][property] = '0.000'
+      }
     }
-
     newSeasonObj = {
       sport_id: currentPlayerSeasonsSince2020Array[i]['sport_id'],
       league_short: currentPlayerSeasonsSince2020Array[i]['league_short'],
@@ -44,16 +44,14 @@ const populatePlayerSeasons = async () => {
       league: currentPlayerSeasonsSince2020Array[i]['league'],
       sport_code: currentPlayerSeasonsSince2020Array[i]['sport_code'],
       ao: parseInt(currentPlayerSeasonsSince2020Array[i]['ao']),
-      slg1000:
-        parseInt(currentPlayerSeasonsSince2020Array[i]['slg1000']) * 1000,
+      slg1000: parseFloat(currentPlayerSeasonsSince2020Array[i]['slg']) * 1000,
       team_full: currentPlayerSeasonsSince2020Array[i]['team_full'],
-      ops1000:
-        parseInt(currentPlayerSeasonsSince2020Array[i]['ops1000']) * 1000,
+      ops1000: parseFloat(currentPlayerSeasonsSince2020Array[i]['ops']) * 1000,
       team_abbrev: currentPlayerSeasonsSince2020Array[i]['team_abbreb'],
       hbp: parseInt(currentPlayerSeasonsSince2020Array[i]['hbp']),
       rbi: parseInt(currentPlayerSeasonsSince2020Array[i]['rbi']),
-      go_ao1000:
-        parseInt(currentPlayerSeasonsSince2020Array[i]['go_ao1000']) * 1000,
+      // go_ao1000: too many validation errors
+      //   parseFloat(currentPlayerSeasonsSince2020Array[i]['go_ao']) * 1000,
       hfly: parseInt(currentPlayerSeasonsSince2020Array[i]['hfly']),
       lob: parseInt(currentPlayerSeasonsSince2020Array[i]['lob']),
       xbh: parseInt(currentPlayerSeasonsSince2020Array[i]['xbh']),
@@ -64,8 +62,7 @@ const populatePlayerSeasons = async () => {
       roe: parseInt(currentPlayerSeasonsSince2020Array[i]['roe']),
       sb: parseInt(currentPlayerSeasonsSince2020Array[i]['sb']),
       player_id: currentPlayerSeasonsSince2020Array[i]['player_id'],
-      avg1000:
-        parseInt(currentPlayerSeasonsSince2020Array[i]['avg1000']) * 1000,
+      avg1000: parseFloat(currentPlayerSeasonsSince2020Array[i]['avg']) * 1000,
       sf: parseInt(currentPlayerSeasonsSince2020Array[i]['sf']),
       sac: parseInt(currentPlayerSeasonsSince2020Array[i]['sac']),
       wo: parseInt(currentPlayerSeasonsSince2020Array[i]['wo']),
@@ -74,7 +71,7 @@ const populatePlayerSeasons = async () => {
       so: parseInt(currentPlayerSeasonsSince2020Array[i]['so']),
       gidp_opp: parseInt(currentPlayerSeasonsSince2020Array[i]['gidp_opp']),
       gidp: parseInt(currentPlayerSeasonsSince2020Array[i]['gidp']),
-      ppa100: parseInt(currentPlayerSeasonsSince2020Array[i]['ppa100']) * 100,
+      ppa100: parseFloat(currentPlayerSeasonsSince2020Array[i]['ppa']) * 100,
       d: parseInt(currentPlayerSeasonsSince2020Array[i]['d']),
       tpa: parseInt(currentPlayerSeasonsSince2020Array[i]['tpa']),
       league_full: currentPlayerSeasonsSince2020Array[i]['league_full'],
@@ -88,25 +85,23 @@ const populatePlayerSeasons = async () => {
       r: parseInt(currentPlayerSeasonsSince2020Array[i]['r']),
       t: parseInt(currentPlayerSeasonsSince2020Array[i]['t']),
       babip1000:
-        parseInt(currentPlayerSeasonsSince2020Array[i]['babip1000']) * 1000,
-      obp1000:
-        parseInt(currentPlayerSeasonsSince2020Array[i]['obp1000']) * 1000,
+        parseFloat(currentPlayerSeasonsSince2020Array[i]['babip']) * 1000,
+      obp1000: parseFloat(currentPlayerSeasonsSince2020Array[i]['obp']) * 1000,
       sport: currentPlayerSeasonsSince2020Array[i]['sport'],
       league_id: currentPlayerSeasonsSince2020Array[i]['league_id'],
     }
-    // formattedSeasonsArray.push(newSeasonObj)
+    formattedSeasonsArray.push(newSeasonObj)
     // for (const property in newSeasonObj) {
     //   if (!newSeasonObj[property]) {
     //     newSeasonObj[property] = 0
     //   }
     // }
   }
-  // const postSeasons = await db.ApiHitterSeason.create(formattedSeasonsArray)
-  // console.log(postSeasons)
-  console.log(slgVals)
+  const postSeasons = await db.ApiHitterSeason.create(formattedSeasonsArray)
+  console.log(postSeasons)
 }
 // console.log(formattedSeasonsArray)
-// populatePlayerSeasons()
+populatePlayerSeasons()
 console.log('seed function was completed to player season db.')
 // grab directories from scraped_data
 /*
