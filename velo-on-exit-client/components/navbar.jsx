@@ -13,8 +13,8 @@ export default function Navbar() {
         </Link>
       </Button>
       <Button variant="outlined">
-        <Link href="/players">
-          <a>Players</a>
+        <Link href="/playersearch">
+          <a>Player Search</a>
         </Link>
       </Button>
       <Button variant="outlined">
