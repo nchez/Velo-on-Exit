@@ -62,7 +62,7 @@ const playerPercentileSchema = new mongoose.Schema(
       minimum: 0,
       maximum: 4000,
     },
-    slgPerc: {
+    slg1000Perc: {
       type: Number,
       required: false,
       minimum: 0,
@@ -74,7 +74,7 @@ const playerPercentileSchema = new mongoose.Schema(
       minimum: 0,
       maximum: 5000,
     },
-    opsPerc: {
+    ops1000Perc: {
       type: Number,
       required: false,
       minimum: 0,

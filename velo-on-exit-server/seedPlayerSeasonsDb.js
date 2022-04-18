@@ -17,7 +17,6 @@ const formattedSeasonsArray = []
 
 const populatePlayerSeasons = async () => {
   // game_date,pitcher,exit_velo ,launch_angle,distance,direction,pitch_speed,pitch_type,mlb_id
-  let slgVals = []
   for (let i = 0; i < currentPlayerSeasonsSince2020Array.length; i++) {
     for (const property in currentPlayerSeasonsSince2020Array[i]) {
       // if (currentPlayerSeasonsSince2020Array[i][property].charAt(0) === '.') {
@@ -90,14 +89,8 @@ const populatePlayerSeasons = async () => {
       league_id: currentPlayerSeasonsSince2020Array[i]['league_id'],
     }
     formattedSeasonsArray.push(newSeasonObj)
-    // for (const property in newSeasonObj) {
-    //   if (!newSeasonObj[property]) {
-    //     newSeasonObj[property] = 0
-    //   }
-    // }
   }
   const postSeasons = await db.ApiHitterSeason.create(formattedSeasonsArray)
-  console.log(postSeasons)
 }
 // console.log(formattedSeasonsArray)
 populatePlayerSeasons()
