@@ -35,7 +35,8 @@ const getAllPlayerSeasons = async (arr) => {
   //   //  N => total # of values in set
   // }
   delete arrsOfNumCategories.__v
-  for (let i = 0; i < allSeasons.length; i++) {
+  // allSeasons.length
+  for (let i = 0; i < 5; i++) {
     console.log(i)
     let playerPercentObject = {}
     for (let j = 0; j < Object.keys(arrsOfNumCategories).length; j++) {
@@ -54,6 +55,8 @@ const getAllPlayerSeasons = async (arr) => {
         percentile
       playerPercentObject[`${Object.keys(arrsOfNumCategories)[j]}`] =
         allSeasons[i][`${Object.keys(arrsOfNumCategories)[j]}`]
+      console.log(allSeasons[i][`${Object.keys(arrsOfNumCategories)[j]}`])
+      console.log(playerPercentObject)
       playerPercentObject['player_id'] = allSeasons[i]['player_id']
       //   console.log(allSeasons[i]['player_id'])
       playerPercentObject['season'] = allSeasons[i]['season']
