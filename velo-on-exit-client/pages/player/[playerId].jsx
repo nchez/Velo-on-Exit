@@ -275,7 +275,11 @@ export default function PlayerPage({ playerData }) {
       <h1 align="center">{playerData.lineup[0].player_name} Stats</h1>
       <h3 align="center">Position(s) Played</h3>
       <ul align="center">{positions}</ul>
-      <TableContainer component={Paper}>
+      <TableContainer
+        component={Paper}
+        style={{ margin: '20px' }}
+        align="center"
+      >
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>{tableHeaders}</TableHead>
           <TableBody>{tableBody}</TableBody>

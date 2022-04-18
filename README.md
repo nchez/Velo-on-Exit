@@ -32,6 +32,18 @@ Next.js and possibly TypeScript for the front-end.
 | GET       | '/games/:gameid      | index  | access game lineup                                 |
 | POST      | '/games/'            | create | add game to database                               |
 
+## MVP
+
+- Scrape data from lineup website
+- Add lineup data to back-end
+- Player stats page with graph(s) and table(s)
+
+## Stretch
+
+- Automate scraping (CronTab?)
+- Interactive player pages
+- Client written in TypeScript
+
 ## Planning
 
 - Day 1
